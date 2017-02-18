@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 import glob
 import os.path
-from sklearn.neighbors import KNeighborsClassifier
 from sudoku_solver import sudoku
-from knn_classifier import create_dataset, train_knn, img_resize, train_knn, predict
+from knn_classifier import KNNClassifier
+from knn_dataset import img_resize
 
 def import_image(image_path):
     img = cv2.imread(image_path)
@@ -132,7 +132,7 @@ def sort_numbers(numbers):
         rows.append(sorted_y)
     return rows
 
-def set_intersections_postion(numbers, rows):
+def set_intersections_position(numbers, rows):
     intersections = {}
 
     for i in range(9):
@@ -152,7 +152,7 @@ def predict_test_number(numbers, intersections, model):
     sudoku_table = np.zeros((9, 9), np.uint8)
 
     for number_index, (row, column) in intersections.iteritems():
-        recognized_number = predict(numbers[number_index][0], model)
+        recognized_number = model.predict(numbers[number_index][0], k=3)
         sudoku_table[row, column] = recognized_number
 
     return sudoku_table
@@ -167,12 +167,11 @@ def main():
     filt_img, rect = filter_image(crop, rectangle)
     numbers = find_numbers(filt_img, crop, orig_cropped)
 
-    samples, labels = create_dataset('dataset/*.jpg')
-    model = train_knn(samples, labels)
+    knn = KNNClassifier()
 
-    intersections = set_intersections_postion(numbers, rows)
+    intersections = set_intersections_position(numbers, rows)
 
-    sudoku_table = predict_test_number(numbers, intersections, model)
+    sudoku_table = predict_test_number(numbers, intersections, knn)
 
     success, steps = sudoku(sudoku_table)
     print "Solved: {0} in {1} steps\n".format(success, steps)
@@ -180,7 +179,6 @@ def main():
 
     cv2.imshow('Number', orig_cropped)
     cv2.waitKey(0)
-
 
 if __name__ == '__main__':
     main()
