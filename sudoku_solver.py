@@ -1,5 +1,7 @@
+import numpy as np
+
 def sudoku(table, depth=0):
-    solve = False
+    is_solved = False
     row, col = -1, -1
     candidates = None
     num_steps = depth
@@ -13,23 +15,22 @@ def sudoku(table, depth=0):
                     candidates = new_candidate
 
     if row < 0:
-        solve = True
+        is_solved = True
     else:
         for candidate in candidates:
             table[row][col] = candidate
             success, n_steps = sudoku(table, depth + 1)
             if success:
-                solve = True
+                is_solved = True
                 num_steps = n_steps
                 break
 
             table[row][col] = 0
 
-    return solve, num_steps
+    return is_solved, num_steps
 
 def check_candidates(table, row, col):
     collision = []
-    # number = 1
 
     for number in range(1, 10):
         is_collision = False
@@ -57,10 +58,8 @@ def main():
                    [0,8,0,0,4,0,6,0,0],
                    [0,7,0,0,0,2,0,0,0]]
 
-    import numpy as np
-
-    res, steps = sudoku(test_number)
-    print "Solved: {0} in {1} steps".format(res, steps)
+    is_solved, steps = sudoku(test_number)
+    print "Solved: {0} in {1} steps".format(is_solved, steps)
     print np.matrix(test_number)
 
 if __name__ == '__main__':
