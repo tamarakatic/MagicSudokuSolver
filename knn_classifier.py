@@ -1,10 +1,5 @@
 import cv2
 import numpy as np
-import glob
-import importlib
-import os
-import errno
-from sklearn.externals import joblib
 from knn_dataset import create_dataset, img_resize
 
 class KNNClassifier:

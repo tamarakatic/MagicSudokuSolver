@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 import glob
 import os.path
-from sklearn.neighbors import KNeighborsClassifier
 
 def create_dataset(img_url):
     training_img = []
