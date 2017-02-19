@@ -123,7 +123,7 @@ def capture_image_or_exist(sudoku_image):
 def main():
     start_time = time.time()
     cap = cv2.VideoCapture(0)
-    sudoku_image = 'sudoku_images/test_2.jpg'
+    sudoku_image = 'sudoku_images/test_1.jpg'
 
     while True:
         _, image = cap.read()
