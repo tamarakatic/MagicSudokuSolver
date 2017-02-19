@@ -3,6 +3,7 @@ import numpy as np
 from sudoku_solver import sudoku
 from knn_classifier import KNNClassifier
 from main_sudoku_functions import import_image, crop_image, filter_image, find_numbers
+import time
 
 def import_test(img_url):
     img, thresh = import_image(img_url)
@@ -120,6 +121,7 @@ def capture_image_or_exist(sudoku_image):
     return areas, numbers, rows
 
 def main():
+    start_time = time.time()
     cap = cv2.VideoCapture(0)
     sudoku_image = 'sudoku_images/test_2.jpg'
 
@@ -152,6 +154,9 @@ def main():
     success, steps = sudoku(sudoku_table)
     print "Solved: {0} in {1} steps\n".format(success, steps)
     print "SuDoKu Solver:\n", np.matrix(sudoku_table)
+    print ("--- %s seconds ---" % (time.time() - start_time))
+
+    cv2.waitKey()
 
 if __name__ == '__main__':
     main()
