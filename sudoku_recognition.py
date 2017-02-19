@@ -51,7 +51,6 @@ def find_contours_test(thresh, crop_img):
 
     cv2.imshow('find_contours_test', crop_img)
     cv2.waitKey()
-
     return areas
 
 def distance(a, b):
@@ -121,7 +120,7 @@ def capture_image_or_exist(sudoku_image):
     return areas, numbers, rows
 
 def main():
-    start_time = time.time()
+    start_time = None
     cap = cv2.VideoCapture(0)
     sudoku_image = 'sudoku_images/test_1.jpg'
 
@@ -137,11 +136,13 @@ def main():
                 cv2.destroyAllWindows()
                 continue
             else:
+                start_time = time.time()
                 break
 
         if cv2.waitKey(1) & 0xFF == ord('e'):
             cap.release()
             cv2.destroyAllWindows()
+            start_time = time.time()
             _, numbers, rows = capture_image_or_exist(sudoku_image)
             break
 
@@ -155,7 +156,6 @@ def main():
     print "Solved: {0} in {1} steps\n".format(success, steps)
     print "SuDoKu Solver:\n", np.matrix(sudoku_table)
     print ("--- %s seconds ---" % (time.time() - start_time))
-
     cv2.waitKey()
 
 if __name__ == '__main__':
